@@ -1,4 +1,4 @@
-import { ensureArray, intToRgba, parseXML } from './utils';
+import { intToRgba, parseXML } from './utils';
 import * as z from 'zod';
 
 export type OmeXml = ReturnType<typeof fromString>;
@@ -13,6 +13,10 @@ function flattenAttributes<T extends { attr: Record<string, unknown> }>({
 }: T): Prettify<Pick<T, Exclude<keyof T, 'attr'>> & T['attr']> {
   // @ts-expect-error - TS doesn't like the prettify type
   return { ...attr, ...rest };
+}
+
+function ensureArray<T>(x: T | T[]) {
+  return Array.isArray(x) ? x : [x];
 }
 
 export type DimensionOrder = z.infer<typeof DimensionOrderSchema>;
@@ -93,7 +97,7 @@ const UuidSchema = z
   .object({})
   .extend({
     attr: z.object({
-      UUID: z.string()
+      FileName: z.string()
     })
   })
   .transform(flattenAttributes);
