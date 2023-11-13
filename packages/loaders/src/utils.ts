@@ -250,3 +250,13 @@ export function parseXML(xmlStr: string) {
   const doc = parser.parseFromString(xmlStr, 'application/xml');
   return xmlToJson(doc.documentElement, { attrtibutesKey: 'attr' });
 }
+
+/** Asserts the condition. */
+export function assert(
+  condition: unknown,
+  message?: string
+): asserts condition {
+  if (!condition) {
+    throw new Error(`Assert failed${message ? `: ${message}` : ''}`);
+  }
+}
